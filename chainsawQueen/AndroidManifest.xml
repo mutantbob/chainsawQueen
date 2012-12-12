@@ -6,6 +6,7 @@
 
     <uses-sdk android:minSdkVersion="7" />
     <uses-feature android:name="android.software.live_wallpaper" />
+    <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/   only needed by the thumbnail generator-->
 
     <application android:label="@string/app_name" >
         <service android:name="ChainsawQueen"
@@ -17,5 +18,16 @@
             <meta-data android:name="android.service.wallpaper" android:resource="@xml/chainsaw_queen" />
             >
         </service>
+
+        <!--activity
+                android:name=".CreateThumbnail"
+                android:label="@string/app_name"
+                >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity -->
     </application>
 </manifest> 
