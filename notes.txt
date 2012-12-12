@@ -1,0 +1,5 @@
+android update project --target 8 --path chainsawQueen/
+
+(cd svgToAndroid; mvn package)
+(cd chainsawQueen; ant debug)
+adb install -r chainsawQueen/bin/chainsawQueen-debug.apk
