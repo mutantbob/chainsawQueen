@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Chainsaw Queen</string>
+    <string name="description">Skull with tiara and crossed chainsaws.</string>
 </resources>
