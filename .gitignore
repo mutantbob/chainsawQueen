@@ -1,3 +1,7 @@
 target
 *~
 chainsawQueen/local.properties
+chainsawQueen/bin
+chainsawQueen/gen
+chainsawQueen/build.xml
+*.iml
