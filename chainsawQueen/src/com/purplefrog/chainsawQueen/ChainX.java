@@ -1,14 +1,18 @@
 package com.purplefrog.chainsawQueen;
 
 import android.graphics.*;
-import android.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: thoth
- * Date: 12/12/12
- * Time: 11:31 AM
- * To change this template use File | Settings | File Templates.
+ * Code for drawing the rotating teeth on a chainsaw.
+ * The fundamental shape of the chainsaw is teeth coming from one point (x0,y0)
+ * travelling to a point (x1,y1) which is calculated as a tangent to
+ * the circular pulley centered at (cx,cy) with radius {@link #pulleyRadius},
+ * travelling around the pulley to point (x3,y3) which is calculated as another tangent
+ * and finally travelling to (x4,y4).
+ *
+ * <p>The direction of travel for the teeth is configurable (since I need it to be different for each side).
+ *
+ * <p>The values for all the points are set (or computed) in the constructors for derived classes.</p>
  */
 public class ChainX
 {
@@ -134,43 +138,6 @@ public class ChainX
             return -rval;
     }
 
-    public void debugStuff(Canvas c, Matrix m0, boolean clockwise)
-    {
-        Paint paint = new Paint();
-
-        paint.setARGB(255,255,150,150);
-        paint.setStrokeWidth(2);
-        paint.setStyle(Paint.Style.STROKE);
-
-        Path path = new Path();
-
-        path.moveTo(x0,y0);
-        path.lineTo(x1, y1);
-
-        path.moveTo(x3, y3);
-        path.lineTo(x4,y4);
-
-        path.transform(m0);
-
-        c.drawPath(path, paint);
-
-        //
-
-        paint.setARGB(255,150,255,150);
-
-        path.reset();
-
-        float startAngle = 360 + (float) (theta1 * 180 / Math.PI);
-        float sweepAngle = (float) ((pulleyChainSweepRadians(clockwise)) * 180 / Math.PI);
-        Log.v(LOG_TAG, " arc "+startAngle+"  +"+sweepAngle);
-        path.arcTo(new RectF(cx-pulleyRadius, cy-pulleyRadius, cx+pulleyRadius, cy+pulleyRadius),
-            startAngle, sweepAngle);
-
-        path.transform(m0);
-
-        c.drawPath(path, paint);
-    }
-
     public PointF outgoingToothCoord(float t, float dist, boolean leftNotRight)
     {
         float x5 = x0 + t * v1x_ + (leftNotRight ? v1y_:-v1y_) * dist;
@@ -210,7 +177,7 @@ public class ChainX
         float x2 = xOfIntersectingCircles(pulleyRadius, r0, r3);
         float y2 = (float) Math.sqrt(pulleyRadius*pulleyRadius-x2*x2);
 
-        Log.d(LOG_TAG, " v2 = " + x2 + ", " + y2);
+//        Log.d(LOG_TAG, " v2 = " + x2 + ", " + y2);
 
         float xpp = dx / r0_ * x2;
         float ypp = dy / r0_ * x2;
@@ -225,7 +192,7 @@ public class ChainX
         {
             theta_r[0] = (float) Math.atan2(ypp+yp, xpp+xp);
 
-            Log.d(LOG_TAG, "theta = "+theta_r[0]+" = atan2("+xp+"+"+xpp+", " + yp + "+" + ypp + ")");
+//            Log.d(LOG_TAG, "theta = "+theta_r[0]+" = atan2("+xp+"+"+xpp+", " + yp + "+" + ypp + ")");
         }
 
         return new PointF(cx + xpp + xp, cy + ypp + yp);
@@ -233,7 +200,7 @@ public class ChainX
     }
 
     /**
-     *
+     * thank you <a href="http://mathworld.wolfram.com/Circle-CircleIntersection.html">MathWorld</a>
      *
      * @param r1 radius of circle at the origin
      * @param r2     radius of circle on the right

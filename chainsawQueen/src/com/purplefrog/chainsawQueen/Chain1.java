@@ -4,11 +4,9 @@ import android.graphics.*;
 import android.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: thoth
- * Date: 12/11/12
- * Time: 7:33 PM
- * To change this template use File | Settings | File Templates.
+ * Logic for drawing the blade of the chainsaw pointing right.
+ * It is the top chainsaw in the complete logo.
+ *
  */
 public class Chain1
     extends ChainX

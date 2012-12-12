@@ -6,6 +6,16 @@ import android.service.wallpaper.*;
 import android.util.*;
 import android.view.*;
 
+/**
+ * This is an animated wallpaper that draws a skull with chainsaws crossed beneath.
+ *
+ * The static art comes from svgs/skull.svg.
+ *
+ * The animated blades come from {@link Chain1} and {@link Chain2}
+ *
+ * <p> This project is based on the example CubeWallpaper1 from google
+ * (since there is no proper documentation on how to write an animated wallpaper).
+ */
 public class ChainsawQueen
     extends WallpaperService
 {
@@ -31,13 +41,6 @@ public class ChainsawQueen
         Matrix m0 = new Matrix();
         m0.setTranslate(dx, dy);
         return m0;
-    }
-
-    public static Matrix rotateMatrix(int px, int py, int degrees)
-    {
-        Matrix degrees45 = new Matrix();
-        degrees45.setRotate(degrees, px, py);
-        return degrees45;
     }
 
     private class MyEngine
@@ -123,81 +126,17 @@ public class ChainsawQueen
             }
 
             // skull logo
-            if (true) {
-                Matrix m2 = matrixToCenterSVG(w, h);
-                if (false) {
-                    Picture.svg_document(c, m2, new Paint());
-                } else {
-//                    Picture.Layer(c, m2, new Paint());
-                    Picture.skull(c, m2, new Paint());
-                    Picture.Layer_1(c, m2, new Paint());
+            Matrix m2 = matrixToCenterSVG(w, h);
 
-                    int toothRate = 6; // how fast do teeth move as time passes
-                    float phase = (this.timeCounter % toothRate) / (float) toothRate;
-                    chain2.drawBlade2(c, phase, m2);
-                    Picture.chainsaw_1_b(c, m2, new Paint());
-                    chain1.drawBlade1(c, phase, m2);
-                    Picture.chainsaw_1_a(c, m2, new Paint());
+            Picture.skull(c, m2, new Paint());
+            Picture.Layer_1(c, m2, new Paint());
 
-                }
-            }
-/*
-
-            // rectangles
-            if (false) {
-                Matrix m0 = new Matrix();
-                if (true) {
-                    int d = Math.min(h, w);
-                    float shrink = d /1000.0f;
-                    m0.setScale(shrink, -shrink);
-                    m0.setTranslate((w-d)/2.0f, (h-d)/2.0f);
-                }
-                Picture2.svg_document(c, m0, new Paint());
-            }
-
-            if (false) {
-                // testing our arc transformation logic
-                Matrix m2 = new Matrix();
-                m2.reset();
-                Picture3.svg_document(c, m2, new Paint());
-            }
-*/
-
-            if (false)
-                crazyArcTest(c);
-
-            if (false) {
-
-                Paint paint = new Paint();
-                paint.setARGB(200, 255, 255,80);
-                paint.setStrokeWidth(5);
-
-                Path p = androidPathBug();
-
-                c.drawPath(p, paint);
-            }
-
-            // rotating rectangle
-            if (false) {
-                Paint paint = new Paint();
-                paint.setARGB(200, 255, 80,80);
-                paint.setStrokeWidth(5);
-
-
-                Path path = squarePath(w, h);
-
-                c.drawPath(path, paint);
-            }
-
-
-            if (false) {
-                int toothRate = 6; // how fast do teeth move as time passes
-
-                float phase = (this.timeCounter % toothRate) / (float) toothRate;
-                chain1.drawBlade1(c, phase, this.matrixToCenterSVG(w, h));
-
-                chain2.drawBlade2(c, phase, this.matrixToCenterSVG(w, h));
-            }
+            int toothRate = 6; // how fast do teeth move as time passes
+            float phase = (this.timeCounter % toothRate) / (float) toothRate;
+            chain2.drawBlade2(c, phase, m2);
+            Picture.chainsaw_1_b(c, m2, new Paint());
+            chain1.drawBlade1(c, phase, m2);
+            Picture.chainsaw_1_a(c, m2, new Paint());
 
         }
 
@@ -207,150 +146,11 @@ public class ChainsawQueen
             float shrink = d/1000.0f;
 //                shrink = 1.0f;
             Matrix m2 = new Matrix();
-            if (true) {
-                m2.setConcat(
-                    translateMatrix((w - d) / 2.0f, (h - d) / 2.0f),
-                    scaleMatrix(shrink, shrink)
-                );
-            } else if (true) {
-                m2.setConcat(
-                    scaleMatrix(shrink, shrink),
-                    translateMatrix((w - d) / 2.0f, (h - d) / 2.0f)
-                );
-
-            } else {
-                m2 = scaleMatrix(shrink,shrink);
-            }
+            m2.setConcat(
+                translateMatrix((w - d) / 2.0f, (h - d) / 2.0f),
+                scaleMatrix(shrink, shrink)
+            );
             return m2;
-        }
-
-        private void crazyArcTest(Canvas c)
-        {
-            Paint g = new Paint();
-            g.setARGB(255, 255, 0, 255);
-
-            {
-                Path p = new Path();
-
-                int x=100; int y=100;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+100, y+100), 0, 270);
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=200; int y=100;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+100, y+100), 30, 90);
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=100; int y=200;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+100, y+100), 120, 90);
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=200; int y=200;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+100, y+100), 210, 180);
-
-                c.drawPath(p, g);
-            }
-
-            //
-
-            {
-                Path p = new Path();
-
-                int x=100; int y=300;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+50, y+100), 0, 270);
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=150; int y=300;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+50, y+100), 30, 90);
-
-                c.drawPath(p, g);
-            }   {
-                Path p = new Path();
-
-                int x=100; int y=400;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+50, y+100), 120, 90);
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=150; int y=400;
-                p.moveTo(x,y);
-                p.arcTo(new RectF(x, y, x+50, y+100), 210, 180);
-
-                c.drawPath(p, g);
-            }
-
-            //
-
-            // rotated 45
-            {
-                Path p = new Path();
-
-                int x=250; int y=300;
-                p.moveTo(x,y);
-                p.transform(rotateMatrix(x + 25, y + 50, 45));
-                p.arcTo(new RectF(x, y, x + 50, y + 100), 0, 270);
-                p.transform(rotateMatrix(x + 25, y + 50, -45));
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=300; int y=300;
-                p.moveTo(x,y);
-                p.transform(rotateMatrix(x + 25, y + 50, 45));
-                p.arcTo(new RectF(x, y, x + 50, y + 100), 30, 90);
-                p.transform(rotateMatrix(x + 25, y + 50, -45));
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=250; int y=400;
-                p.moveTo(x,y);
-                p.transform(rotateMatrix(x + 25, y + 50, 45));
-                p.arcTo(new RectF(x, y, x + 50, y + 100), 120, 90);
-                p.transform(rotateMatrix(x + 25, y + 50, -45));
-
-                c.drawPath(p, g);
-            }
-            {
-                Path p = new Path();
-
-                int x=300; int y=400;
-                p.moveTo(x,y);
-                p.transform(rotateMatrix(x + 25, y + 50, 45));
-                p.arcTo(new RectF(x, y, x + 50, y + 100), 210, -180);
-                p.transform(rotateMatrix(x + 25, y + 50, -45));
-
-                c.drawPath(p, g);
-            }
         }
 
         /**
@@ -373,41 +173,6 @@ public class ChainsawQueen
             p.rLineTo(50, -50);
             p.close();
             return p;
-        }
-
-
-        private Path squarePath(int w, int h)
-        {
-            int cx = w/2;
-            int cy = h/2;
-            int r = Math.min(w,h)/3;
-
-            double theta = (timeCounter)*3.14159 * 3/180;
-
-            float[] pts = new float[2*4];
-
-            pts[0] = (float) (cx + r*Math.cos(theta));
-            pts[1] = (float) (cy + r*Math.sin(theta));
-
-            pts[2] = (float) (cx - r*Math.sin(theta));
-            pts[3] = (float) (cy + r*Math.cos(theta));
-
-            pts[4] = (float) (cx - r*Math.cos(theta));
-            pts[5] = (float) (cy - r*Math.sin(theta));
-
-            pts[6] = (float) (cx + r*Math.sin(theta));
-            pts[7] = (float) (cy - r*Math.cos(theta));
-
-//                pts[8] = pts[0];
-//                pts[9] = pts[1];
-
-            Path path = new Path();
-            path.moveTo(pts[0], pts[1]);
-            for (int i=2; i<pts.length; i+=2) {
-                path.lineTo(pts[i], pts[i+1]);
-            }
-            path.close();
-            return path;
         }
 
         protected Point oldD = null;
