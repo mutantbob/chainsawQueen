@@ -179,7 +179,7 @@ public class ChainsawQueen
         private void logDimensions(int w, int h)
         {
             if (oldD==null || w != oldD.x || h != oldD.y) {
-                Log.d(LOG_TAG, "wallpaper dimensions "+w+"x"+h);
+//                Log.d(LOG_TAG, "wallpaper dimensions "+w+"x"+h);
                 oldD = new Point(w,h);
             }
         }

@@ -27,7 +27,7 @@ public class Chain2
 
         PointF v1 = solveCircles(x0, y0, cx, cy, pulleyRadius, false, theta_r);
         theta1 = theta_r[0];
-        Log.d(LOG_TAG, " v1 = "+v1.x+", "+v1.y);
+//        Log.d(LOG_TAG, " v1 = "+v1.x+", "+v1.y);
         x1 = v1.x;
         y1 = v1.y;
 
