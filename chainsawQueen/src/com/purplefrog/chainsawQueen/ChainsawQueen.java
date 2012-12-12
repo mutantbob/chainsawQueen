@@ -43,7 +43,7 @@ public class ChainsawQueen
         return m0;
     }
 
-    private class MyEngine
+    public class MyEngine
         extends Engine
     {
 
@@ -110,7 +110,7 @@ public class ChainsawQueen
             timeCounter++;
         }
 
-        private void drawFrame_(Canvas c)
+        public void drawFrame_(Canvas c)
         {
             int w = c.getWidth();
             int h = c.getHeight();
