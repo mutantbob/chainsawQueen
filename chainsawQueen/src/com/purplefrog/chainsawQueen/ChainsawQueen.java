@@ -3,7 +3,6 @@ package com.purplefrog.chainsawQueen;
 import android.graphics.*;
 import android.os.*;
 import android.service.wallpaper.*;
-import android.util.*;
 import android.view.*;
 
 /**
@@ -27,6 +26,18 @@ public class ChainsawQueen
     public Engine onCreateEngine()
     {
         return new MyEngine();
+    }
+
+    public static Matrix matrixToCenterSVG(int w, int h)
+    {
+        int d = Math.min(h, w);
+        float shrink = d/1000.0f;
+        Matrix m2 = new Matrix();
+        m2.setConcat(
+            translateMatrix((w - d) / 2.0f, (h - d) / 2.0f),
+            scaleMatrix(shrink, shrink)
+        );
+        return m2;
     }
 
     public static Matrix scaleMatrix(float sx, float sy)
@@ -55,7 +66,6 @@ public class ChainsawQueen
             }
         };
         public boolean rememberedVisible=false;
-        private int timeCounter=0;
         protected Chain1 chain1 = new Chain1();
         protected Chain2 chain2 = new Chain2();
 
@@ -107,7 +117,6 @@ public class ChainsawQueen
                 mHandler.postDelayed(redrawtask, 1000 / 25);
             }
 
-            timeCounter++;
         }
 
         public void drawFrame_(Canvas c)
@@ -125,30 +134,17 @@ public class ChainsawQueen
                 c.drawRect(0, 0, w, h, p0);
             }
 
-            // skull logo
             Matrix m2 = matrixToCenterSVG(w, h);
 
-            int toothRate = 4; // how fast do teeth move as time passes
-            float phase = (this.timeCounter % toothRate) / (float) toothRate;
+            // skull logo
+            double toothPeriod = 0.2; // seconds
+            float phase = (float) ((System.currentTimeMillis() / 1000.0 / toothPeriod) % 1);
             chain2.drawBlade2(c, phase, m2);
             Picture.chainsaw_1_b(c, m2, new Paint());
             chain1.drawBlade1(c, phase, m2);
             Picture.chainsaw_1_a(c, m2, new Paint());
 
             Picture.skull(c, m2, new Paint());
-        }
-
-        private Matrix matrixToCenterSVG(int w, int h)
-        {
-            int d = Math.min(h, w);
-            float shrink = d/1000.0f;
-//                shrink = 1.0f;
-            Matrix m2 = new Matrix();
-            m2.setConcat(
-                translateMatrix((w - d) / 2.0f, (h - d) / 2.0f),
-                scaleMatrix(shrink, shrink)
-            );
-            return m2;
         }
 
         /**
