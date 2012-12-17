@@ -274,7 +274,19 @@ public abstract class SVGBase
         double x1p = cosPhi*mx + sinPhi*my;
         double y1p = -sinPhi*mx + cosPhi*my;
 
-        double q = svg.step2CrazyRadical(x1p, y1p);
+        double q;
+        {
+            double gamma = x1p*x1p/(svg.rx*svg.rx) + y1p*y1p/(svg.ry*svg.ry);
+            if (gamma>1) {
+                double gammaR = Math.sqrt(gamma);
+                svg.rx *= gammaR;
+                svg.ry *= gammaR;
+                q=0;
+            } else {
+                q = svg.step2CrazyRadical(x1p, y1p);
+            }
+        }
+
         double cxp = q*svg.rx*y1p/svg.ry;
         double cyp = - q*svg.ry*x1p/svg.rx;
 
