@@ -170,7 +170,7 @@ public class ChainX
         float dx = x0-cx;
         float dy = y0-cy;
 
-        float r0_ = ChainsawQueen.magnitude(dx, dy);
+        float r0_ = magnitude(dx, dy);
         float r0 = r0_ /2;
         float r3 = r0;
 
@@ -210,5 +210,10 @@ public class ChainX
     public static float xOfIntersectingCircles(float r1, float r2, float d)
     {
         return (d*d - r2*r2 + r1*r1) / (2*d);
+    }
+
+    public static float magnitude(float dx, float dy)
+    {
+        return (float) Math.sqrt(dx*dx + dy*dy);
     }
 }

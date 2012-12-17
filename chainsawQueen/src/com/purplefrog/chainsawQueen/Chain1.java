@@ -1,7 +1,6 @@
 package com.purplefrog.chainsawQueen;
 
 import android.graphics.*;
-import android.util.*;
 
 /**
  * Logic for drawing the blade of the chainsaw pointing right.
@@ -29,7 +28,7 @@ public class Chain1
         float v1x = x1 - x0;
         float v1y = y1 - y0;
 
-        v1m = ChainsawQueen.magnitude(v1x, v1y);
+        v1m = magnitude(v1x, v1y);
 
         v1x_ = v1x / v1m;
         v1y_ = v1y / v1m;
@@ -43,7 +42,7 @@ public class Chain1
         y3 = v3.y;
         float v3x = x4 - x3;
         float v3y = y4 - y3;
-        v3m = ChainsawQueen.magnitude(v3x, v3y);
+        v3m = magnitude(v3x, v3y);
         v3x_ = v3x /v3m;
         v3y_ = v3y /v3m;
     }
