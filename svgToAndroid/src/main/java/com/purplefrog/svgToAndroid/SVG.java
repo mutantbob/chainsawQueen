@@ -104,10 +104,23 @@ public class SVG
             return new SVGRect(element);
         } else if ("circle".equals(ename)) {
             return new SVGCircle(element);
+        } else if ("ellipse".equals(ename)) {
+            return new SVGEllipse(element);
         } else {
-            logger.warn("unrecognized SVG element <"+ename+">");
+            if (dontCareAboutElement(ename)) {
+                logger.debug("unrecognized SVG element <" + ename + ">");
+            } else {
+                logger.warn("unrecognized SVG element <"+ename+">");
+            }
             return null;
         }
+    }
+
+    private static boolean dontCareAboutElement(String ename)
+    {
+        return "defs".equals(ename)
+            || "namedview".equals(ename)
+            || "metadata".equals(ename);
     }
 
     public void writeJavaTo(Writer ostr)
