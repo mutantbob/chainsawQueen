@@ -128,16 +128,14 @@ public class ChainsawQueen
             // skull logo
             Matrix m2 = matrixToCenterSVG(w, h);
 
-            Picture.skull(c, m2, new Paint());
-            Picture.Layer_1(c, m2, new Paint());
-
-            int toothRate = 6; // how fast do teeth move as time passes
+            int toothRate = 4; // how fast do teeth move as time passes
             float phase = (this.timeCounter % toothRate) / (float) toothRate;
             chain2.drawBlade2(c, phase, m2);
             Picture.chainsaw_1_b(c, m2, new Paint());
             chain1.drawBlade1(c, phase, m2);
             Picture.chainsaw_1_a(c, m2, new Paint());
 
+            Picture.skull(c, m2, new Paint());
         }
 
         private Matrix matrixToCenterSVG(int w, int h)
