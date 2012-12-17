@@ -9,7 +9,7 @@ import android.widget.*;
 import java.io.*;
 
 /**
- * This activity does nothing but create a snapshot of the wallpaper using {@link com.purplefrog.chainsawQueen.ChainsawQueen.MyEngine#drawFrame_(android.graphics.Canvas)}.
+ * This activity does nothing but create a snapshot of the wallpaper using {@link BoringLiveWallpaper.MyEngine#drawFrame_(android.graphics.Canvas)}.
  * The snapshot is saved to {@link #ofname}.
  * Since this activity is entirely useless to anyone but the developer
  * its clauses in AndroidManifest.xml are commented out
@@ -50,10 +50,11 @@ public class CreateThumbnail
         Bitmap b = Bitmap.createBitmap(192,192, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
 
-        ChainsawQueen q = new ChainsawQueen();
-        ChainsawQueen.MyEngine e = q.new MyEngine();
+        BoringLiveWallpaper q;
+        q = new ChainsawQueen();
+//        q = new ChainsawTeddy();
 
-        e.drawFrame_(c);
+        q.drawFrame_(c);
 
         OutputStream stream = new FileOutputStream(ofname);
 
