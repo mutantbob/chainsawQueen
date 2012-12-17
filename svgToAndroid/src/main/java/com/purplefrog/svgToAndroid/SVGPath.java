@@ -190,33 +190,45 @@ public class SVGPath
 
             } else if (ch == 'a') {
                 cursor[0]++;
-                double rx = nextNumber(path_d, cursor);
-                double ry = nextNumber(path_d, cursor);
-                double phi = nextNumber(path_d, cursor);
-                double largeArcFlag = nextNumber(path_d, cursor);
-                double sweepFlag = nextNumber(path_d, cursor);
-                double x = nextNumber(path_d, cursor);
-                double y = nextNumber(path_d, cursor);
+                Double rx = nextNumber(path_d, cursor);
+                while (true) {
+                    double ry = nextNumber(path_d, cursor);
+                    double phi = nextNumber(path_d, cursor);
+                    double largeArcFlag = nextNumber(path_d, cursor);
+                    double sweepFlag = nextNumber(path_d, cursor);
+                    double x = nextNumber(path_d, cursor);
+                    double y = nextNumber(path_d, cursor);
 
-                double x2 = turtle.getX() + x;
-                double y2 = turtle.getY() + y;
-                dst.append("// "+turtle.getX()+" , "+turtle.getY()+"\n");
-                dst.append(emitCodeForArc(varName, turtle.getX(), turtle.getY(), rx, ry, phi, largeArcFlag, sweepFlag, x2, y2));
-                turtle.setLocation(x2, y2);
+                    double x2 = turtle.getX() + x;
+                    double y2 = turtle.getY() + y;
+                    dst.append("// "+turtle.getX()+" , "+turtle.getY()+"\n");
+                    dst.append(emitCodeForArc(varName, turtle.getX(), turtle.getY(), rx, ry, phi, largeArcFlag, sweepFlag, x2, y2));
+                    turtle.setLocation(x2, y2);
+
+                    rx = nextNumber_(path_d, cursor);
+                    if (null == rx)
+                        break;
+                }
 
             } else if (ch == 'A') {
                 cursor[0]++;
-                double rx = nextNumber(path_d, cursor);
-                double ry = nextNumber(path_d, cursor);
-                double phi = nextNumber(path_d, cursor);
-                double largeArcFlag = nextNumber(path_d, cursor);
-                double sweepFlag = nextNumber(path_d, cursor);
-                double x = nextNumber(path_d, cursor);
-                double y = nextNumber(path_d, cursor);
+                Double rx = nextNumber(path_d, cursor);
+                while (true) {
+                    double ry = nextNumber(path_d, cursor);
+                    double phi = nextNumber(path_d, cursor);
+                    double largeArcFlag = nextNumber(path_d, cursor);
+                    double sweepFlag = nextNumber(path_d, cursor);
+                    double x = nextNumber(path_d, cursor);
+                    double y = nextNumber(path_d, cursor);
 
-                dst.append(emitCodeForArc(varName, turtle.getX(), turtle.getY(), rx, ry, phi, largeArcFlag, sweepFlag, x, y));
+                    dst.append(emitCodeForArc(varName, turtle.getX(), turtle.getY(), rx, ry, phi, largeArcFlag, sweepFlag, x, y));
 
-                turtle.setLocation(x,y);
+                    turtle.setLocation(x,y);
+
+                    rx = nextNumber_(path_d, cursor);
+                    if (null==rx)
+                        break;
+                }
 
             } else if ('z' == ch) {
                 cursor[0]++;
