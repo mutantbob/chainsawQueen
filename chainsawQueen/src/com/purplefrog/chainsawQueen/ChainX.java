@@ -51,7 +51,7 @@ public class ChainX
     protected float theta1;
     protected float theta2;
     float longTooth = 45;
-    float valleyTooth = 20;
+    float valleyTooth = 15;
 
     public ChainX()
     {
