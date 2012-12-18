@@ -3,18 +3,24 @@ package com.purplefrog.chainsawQueen;
 import android.graphics.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: thoth
- * Date: 12/17/12
- * Time: 2:24 PM
- * To change this template use File | Settings | File Templates.
+ * This is an animated wallpaper that draws a skull with chainsaws crossed beneath.
+ *
+ * The static art comes from svgs/skull.svg.
+ *
+ * The animated blades come from {@link com.purplefrog.chainsawQueen.Chain1} and {@link com.purplefrog.chainsawQueen.Chain2}
+ *
+ * <p> This project is based on the example CubeWallpaper1 from google
+ * (since there is no proper documentation on how to write an animated wallpaper).
  */
-public class ChainsawTeddy
+public class ChainsawKitty
     extends BoringLiveWallpaper
 {
-    Chain1 chain1 = new Chain1();
-    Chain2 chain2 = new Chain2();
+    public final static String LOG_TAG = ChainsawKitty.class.getName();
 
+    protected Chain1 chain1 = new Chain1();
+    protected Chain2 chain2 = new Chain2();
+
+    @Override
     public void drawFrame_(Canvas c)
     {
         int w = c.getWidth();
@@ -30,7 +36,7 @@ public class ChainsawTeddy
             c.drawRect(0, 0, w, h, p0);
         }
 
-        Matrix m2 = BoringLiveWallpaper.matrixToCenterSVG(w, h);
+        Matrix m2 = matrixToCenterSVG(w, h);
 
         // skull logo
         double toothPeriod = 0.2; // seconds
@@ -40,8 +46,9 @@ public class ChainsawTeddy
         chain1.drawBlade1(c, phase, m2);
         Picture.chainsaw_1_a(c, m2, new Paint());
 
-        Picture.teddy_head(c, m2, new Paint());
-        Picture.teddy_ears(c, m2, new Paint());
+        Picture.kitty_head(c, m2, new Paint());
+        Picture.kitty_ears(c, m2, new Paint());
     }
+
 
 }

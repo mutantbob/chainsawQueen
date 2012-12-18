@@ -3,5 +3,7 @@
     <string name="app_name">Chainsaw Queen</string>
     <string name="description">Skull with tiara and crossed chainsaws.</string>
     <string name="teddy_name">Chainsaw Teddy</string>
-    <string name="teddy_description">teddy head and crossed chainsaws.</string>
+    <string name="teddy_description">Teddy bear head and crossed chainsaws.</string>
+    <string name="kitty_name">Chainsaw Kitty</string>
+    <string name="kitty_description">Kitty head and crossed chainsaws.</string>
 </resources>

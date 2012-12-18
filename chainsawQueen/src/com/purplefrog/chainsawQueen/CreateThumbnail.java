@@ -51,8 +51,9 @@ public class CreateThumbnail
         Canvas c = new Canvas(b);
 
         BoringLiveWallpaper q;
-        q = new ChainsawQueen();
+//        q = new ChainsawQueen();
 //        q = new ChainsawTeddy();
+        q = new ChainsawKitty();
 
         q.drawFrame_(c);
 
