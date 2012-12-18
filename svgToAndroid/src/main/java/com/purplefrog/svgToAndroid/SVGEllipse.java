@@ -18,7 +18,7 @@ public class SVGEllipse
 {
     private AffineTransform xform;
     private double cx, cy, rx, ry;
-    private String paintAdjustments;
+    private DrawStyleParts paintAdjustments;
 
     public SVGEllipse(Element element)
     {
@@ -47,9 +47,6 @@ public class SVGEllipse
         StringBuilder rval = new StringBuilder();
         rval.append(clicheFunctionDeclaration() + "{\n");
 
-        rval.append(paint());
-
-
         rval.append("Path rval = new Path();\n");
 
         rval.append("rval.arcTo(new RectF("+(cx-rx)+"f, "+(cy-ry)+"f, " +(cx+rx)+"f, " + (cy +ry)+"f), 0, 180, true);\n");
@@ -61,16 +58,20 @@ public class SVGEllipse
 
         rval.append("rval.transform(m0);\n");
 
-        rval.append("c.drawPath(rval, paint);\n");
+        rval.append("Paint paint = new Paint(p0);\n" );
+
+        if (null != paintAdjustments.fillOnly) {
+            rval.append(paintAdjustments.fillOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
+        if (null != paintAdjustments.strokeOnly) {
+            rval.append(paintAdjustments.strokeOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
         rval.append("}\n");
         return rval.toString();
-    }
-
-
-
-    private String paint()
-    {
-        return "Paint paint = new Paint(p0);\n" + paintAdjustments;
     }
 
 

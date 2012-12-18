@@ -31,15 +31,6 @@ public class SVGGroup
         xform = SVGPath.parseTransform(element.getAttributeValue("transform"));
     }
 
-    private static String nameOrId(Element element)
-    {
-        Namespace ns = Namespace.getNamespace("http://www.inkscape.org/namespaces/inkscape");
-        String rval = element.getAttributeValue("label", ns);
-        if (null != rval)
-            return rval;
-        return element.getAttributeValue("id");
-    }
-
 
     @Override
     public void writeJavaTo(Writer w)

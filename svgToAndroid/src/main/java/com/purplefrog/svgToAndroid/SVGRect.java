@@ -19,7 +19,7 @@ public class SVGRect
     public double width;
     public double x;
     public double y;
-    private String paintAdjustments;
+    private DrawStyleParts paintAdjustments;
 
     public SVGRect(Element element)
     {
@@ -46,8 +46,6 @@ public class SVGRect
         StringBuilder rval = new StringBuilder();
         rval.append(clicheFunctionDeclaration() + "{\n");
 
-        rval.append(paint());
-
         rval.append("Path rval = new Path();\n");
 
         rval.append("rval.moveTo("+x+"f, "+y+"f);\n");
@@ -58,7 +56,18 @@ public class SVGRect
 
         rval.append("rval.transform(m0);\n");
 
-        rval.append("c.drawPath(rval, paint);\n");
+        rval.append("Paint paint = new Paint(p0);\n" );
+
+        if (null != paintAdjustments.fillOnly) {
+            rval.append(paintAdjustments.fillOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
+        if (null != paintAdjustments.strokeOnly) {
+            rval.append(paintAdjustments.strokeOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
         rval.append("}\n");
         return rval.toString();
     }

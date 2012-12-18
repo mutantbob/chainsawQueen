@@ -106,6 +106,9 @@ public class SVG
             return new SVGCircle(element);
         } else if ("ellipse".equals(ename)) {
             return new SVGEllipse(element);
+        } else if ("use".equals(ename)) {
+            return new SVGUse(element);
+
         } else {
             if (dontCareAboutElement(ename)) {
                 logger.debug("unrecognized SVG element <" + ename + ">");

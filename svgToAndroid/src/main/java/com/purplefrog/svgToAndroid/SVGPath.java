@@ -27,7 +27,7 @@ public class SVGPath
     protected AffineTransform xform;
     protected String d;
     protected final StringBuilder drawingCommands;
-    private String paintAdjustments;
+    private DrawStyleParts paintAdjustments;
 
     public SVGPath(Element element)
         throws ParseException
@@ -48,26 +48,49 @@ public class SVGPath
     public void writeJavaTo(Writer w)
         throws IOException
     {
-        w.write(myOneFunction());
+        w.write(myPathFunction());
+        w.write(myDrawFunction());
     }
 
-    public String myOneFunction()
+    public String myPathFunction()
     {
         StringBuilder rval = new StringBuilder();
-        rval.append(clicheFunctionDeclaration() + "{\n");
+        rval.append(clichePathFunctionDeclaration(nameify("pathOnly_"+id)) + "{\n");
 
-        rval.append(paint());
-
-        rval.append("Path rval = new Path();\n");
+        rval.append("Path rval = new Path();\n\n");
 
         rval.append(drawingCommands);
 
         rval.append(convertToMatrixString(xform, "m"));
         rval.append("rval.transform(m);\n");
 
+        rval.append("\nreturn rval;\n");
+        rval.append("}\n\n");
+
+        return rval.toString();
+    }
+
+    public String myDrawFunction()
+    {
+        StringBuilder rval = new StringBuilder();
+        rval.append(clicheFunctionDeclaration() + "{\n");
+
+        rval.append("Path rval = pathOnly_" +nameify(id)+ "();\n");
+
         rval.append("rval.transform(m0);\n");
 
-        rval.append("c.drawPath(rval, paint);\n");
+        rval.append("Paint paint = new Paint(p0);\n" );
+
+        if (null != paintAdjustments.fillOnly) {
+            rval.append(paintAdjustments.fillOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
+        if (null != paintAdjustments.strokeOnly) {
+            rval.append(paintAdjustments.strokeOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
         rval.append("}\n");
         return rval.toString();
     }
@@ -298,11 +321,6 @@ public class SVGPath
         } else {
             return null;
         }
-    }
-
-    private String paint()
-    {
-        return "Paint paint = new Paint(p0);\n" + paintAdjustments;
     }
 
     @Override

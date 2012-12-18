@@ -18,7 +18,7 @@ public class SVGCircle
 {
     private AffineTransform xform;
     private double cx, cy, r;
-    private String paintAdjustments;
+    private DrawStyleParts paintAdjustments;
 
     public SVGCircle(Element element)
     {
@@ -46,9 +46,6 @@ public class SVGCircle
         StringBuilder rval = new StringBuilder();
         rval.append(clicheFunctionDeclaration() + "{\n");
 
-        rval.append(paint());
-
-
         rval.append("Path rval = new Path();\n");
 
         rval.append("rval.arcTo(new RectF("+(cx-r)+"f, "+(cy-r)+"f, " +(cx+r)+"f, " + (cy +r)+"f), 0, 180, true);\n");
@@ -60,18 +57,21 @@ public class SVGCircle
 
         rval.append("rval.transform(m0);\n");
 
-        rval.append("c.drawPath(rval, paint);\n");
+        rval.append("Paint paint = new Paint(p0);\n" );
+
+        if (null != paintAdjustments.fillOnly) {
+            rval.append(paintAdjustments.fillOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
+        if (null != paintAdjustments.strokeOnly) {
+            rval.append(paintAdjustments.strokeOnly);
+            rval.append("c.drawPath(rval, paint);\n");
+        }
+
         rval.append("}\n");
         return rval.toString();
     }
-
-
-
-    private String paint()
-    {
-        return "Paint paint = new Paint(p0);\n" + paintAdjustments;
-    }
-
 
     @Override
     public List<SVGPart> getChildren()

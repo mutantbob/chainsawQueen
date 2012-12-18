@@ -34,7 +34,12 @@ public abstract class SVGBase
 
     public String myFunctionName()
     {
-        return id.replaceAll("[- ]", "_");
+        return nameify(id);
+    }
+
+    public static String nameify(String svgId)
+    {
+        return svgId.replaceAll("[- ]", "_");
     }
 
     public String getId()
@@ -59,11 +64,14 @@ public abstract class SVGBase
         return "public static void "+ fname +"(Canvas c, Matrix m0, Paint p0)\n";
     }
 
-    public static String parseStyle(Element element, String paintObjectName)
+    public static String clichePathFunctionDeclaration(String fname)
     {
-        StringBuilder rval = new StringBuilder();
-        parseStyle(element.getAttributeValue("style"), rval, paintObjectName);
-        return rval.toString();
+        return "public static Path "+ fname +"()\n";
+    }
+
+    public static DrawStyleParts parseStyle(Element element, String paintObjectName)
+    {
+        return DrawStyleParts.parseStyle(element.getAttributeValue("style"), "paint");
     }
 
     public static void parseStyle(String style, StringBuilder dst, String paintObjectName)
@@ -85,9 +93,9 @@ public abstract class SVGBase
             String value = part.substring(idx+1);
 
             if ("fill".equals(key)) {
-                fill = updateRGB(value);
+                fill = DrawStyleParts.updateRGB(value);
             } else if ("stroke".equals(key)) {
-                stroke = updateRGB(value);
+                stroke = DrawStyleParts.updateRGB(value);
             } else if ("fill-opacity".equals(key)) {
                 fillOpacity = Double.parseDouble(value);
             } else if ("stroke-width".equals(key)) {
@@ -104,12 +112,12 @@ public abstract class SVGBase
 
         if (stroke != null) {
             dst.append(paintObjectName +
-                            ".setARGB("+ argbParameters(stroke, strokeOpacity) +");\n");
+                            ".setARGB("+ DrawStyleParts.argbParameters(stroke, strokeOpacity) +");\n");
             dst.append(paintObjectName+".setStyle(Paint.Style.STROKE);\n");
         }
         if (fill != null) {
             dst.append(paintObjectName +
-                ".setARGB("+ argbParameters(fill, fillOpacity) +");\n");
+                ".setARGB("+ DrawStyleParts.argbParameters(fill, fillOpacity) +");\n");
             dst.append(paintObjectName+".setStyle(Paint.Style.FILL);\n");
         }
 
@@ -126,22 +134,6 @@ public abstract class SVGBase
             oldColor = new Color(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue(), a);
         }
         return oldColor;
-    }
-
-    public static String argbParameters(Color fill, Double fillOpacity)
-    {
-        int alpha = (int) (fillOpacity*255.9);
-        return alpha+","+fill.getRed()+", "+fill.getGreen()+", "+fill.getBlue();
-    }
-
-    public static Color updateRGB(String stringValue)
-    {
-        if ("none".equals(stringValue)) {
-            return null;
-        } else {
-            return Color.decode(stringValue);
-
-        }
     }
 
     public static AffineTransform parseTransform(String transform)
@@ -203,6 +195,15 @@ public abstract class SVGBase
             " 0, 0, 1});\n");
 
         return rval.toString();
+    }
+
+    public static String nameOrId(Element element)
+    {
+        Namespace ns = Namespace.getNamespace("http://www.inkscape.org/namespaces/inkscape");
+        String rval = element.getAttributeValue("label", ns);
+        if (null != rval)
+            return rval;
+        return element.getAttributeValue("id");
     }
 
     /**
