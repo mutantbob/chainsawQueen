@@ -32,6 +32,9 @@ public class ChainX
     /** pulley center*/
     float cx;
     float cy;
+    /** do the teeth rotate clockwise? */
+    private final boolean clockwise;
+
     protected final int pulleyRadius = 85;
     protected float v1m;
     /**
@@ -53,17 +56,22 @@ public class ChainX
     float longTooth = 45;
     float valleyTooth = 15;
 
-    public ChainX()
+    public ChainX(int x0, int y0, int cx, int cy, int x4, int y4, boolean polarity)
     {
-        y4 = 1000-271;
-        y0 = 671;
-        cx = 767;
-        x0 = 457;
-        x4 = 482;
-        cy = 1000-414;
+        this.y4 = y4;
+        this.y0 = y0;
+        this.cx = cx;
+        this.x0 = x0;
+        this.x4 = x4;
+        this.cy = cy;
+        this.clockwise = polarity;
+
+        float[] theta_r = new float[1];
+        calcCircleTopTangent(theta_r, polarity);
+        calcCircleBottomTangent(theta_r, !polarity);
     }
 
-    public void drawBlade(Canvas c, float phase, Matrix m0, boolean clockwise)
+    public void drawBlade(Canvas c, float phase, Matrix m0)
     {
         Paint paint = new Paint();
         paint.setStrokeWidth(3);
@@ -215,5 +223,36 @@ public class ChainX
     public static float magnitude(float dx, float dy)
     {
         return (float) Math.sqrt(dx*dx + dy*dy);
+    }
+
+    protected void calcCircleTopTangent(float[] theta_r, boolean leftNotRight)
+    {
+        PointF v1 = solveCircles(x0, y0, cx, cy, pulleyRadius, leftNotRight, theta_r);
+        theta1 = theta_r[0];
+//        Log.d(LOG_TAG, " v1 = "+v1.x+", "+v1.y);
+        x1 = v1.x;
+        y1 = v1.y;
+
+        float v1x = x1 - x0;
+        float v1y = y1 - y0;
+
+        v1m = magnitude(v1x, v1y);
+
+        v1x_ = v1x / v1m;
+        v1y_ = v1y / v1m;
+    }
+
+    protected void calcCircleBottomTangent(float[] theta_r, boolean leftNotRight)
+    {
+        PointF v3 = solveCircles(x4, y4, cx, cy, pulleyRadius, leftNotRight, theta_r);
+        theta2 = theta_r[0];
+
+        x3 = v3.x;
+        y3 = v3.y;
+        float v3x = x4 - x3;
+        float v3y = y4 - y3;
+        v3m = magnitude(v3x, v3y);
+        v3x_ = v3x /v3m;
+        v3y_ = v3y /v3m;
     }
 }

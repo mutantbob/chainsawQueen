@@ -41,9 +41,11 @@ public class ChainsawQueen
         // skull logo
         double toothPeriod = 0.2; // seconds
         float phase = (float) ((System.currentTimeMillis() / 1000.0 / toothPeriod) % 1);
-        chain2.drawBlade2(c, phase, m2);
+
+        chain2.drawBlade(c, phase, m2);
         Picture.chainsaw_1_b(c, m2, new Paint());
-        chain1.drawBlade1(c, phase, m2);
+
+        chain1.drawBlade(c, phase, m2);
         Picture.chainsaw_1_a(c, m2, new Paint());
 
         Picture.skull(c, m2, new Paint());
