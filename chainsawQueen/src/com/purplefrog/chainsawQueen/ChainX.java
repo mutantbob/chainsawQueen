@@ -33,7 +33,7 @@ public class ChainX
     float cx;
     float cy;
     /** do the teeth rotate clockwise? */
-    private final boolean clockwise;
+    public final boolean clockwise;
 
     protected final int pulleyRadius = 85;
     protected float v1m;
@@ -103,7 +103,7 @@ public class ChainX
                     + phase *toothPeriod;
 
                 boolean valley = 0 != i % 2;
-                PointF w;
+                Point2DF w;
                 float somethingTooth = extraToothDistance + (valley ? valleyTooth : longTooth);
                 if (t<v1m) {
                     w = outgoingToothCoord(t, somethingTooth, clockwise);
@@ -131,7 +131,7 @@ public class ChainX
         c.drawPath(path, paint);
     }
 
-    private float pulleyChainSweepRadians(boolean clockwise)
+    public float pulleyChainSweepRadians(boolean clockwise)
     {
         float rval = theta2 - theta1;
         if (!clockwise)
@@ -146,21 +146,21 @@ public class ChainX
             return -rval;
     }
 
-    public PointF outgoingToothCoord(float t, float dist, boolean leftNotRight)
+    public Point2DF outgoingToothCoord(float t, float dist, boolean leftNotRight)
     {
         float x5 = x0 + t * v1x_ + (leftNotRight ? v1y_:-v1y_) * dist;
         float y5 = y0 + t * v1y_ +(leftNotRight ? - v1x_:v1x_) * dist;
-        return new PointF(x5,y5);
+        return new Point2DF(x5,y5);
     }
 
-    public PointF lowerToothCoord(float t, float dist, boolean clockwise)
+    public Point2DF lowerToothCoord(float t, float dist, boolean clockwise)
     {
         float x5 = x3 + t * v3x_ + (clockwise ? v3y_:-v3y_) * dist;
         float y5 = y3 + t * v3y_ +(clockwise ? - v3x_:v3x_) * dist;
-        return new PointF(x5,y5);
+        return new Point2DF(x5,y5);
     }
 
-    public PointF pulleyToothCoord(float t, float pointDistance, boolean clockwise)
+    public Point2DF pulleyToothCoord(float t, float pointDistance, boolean clockwise)
     {
 
         float radialFactor = pulleyRadius +valleyTooth;
@@ -170,10 +170,10 @@ public class ChainX
 
         float x5 = cx + (float) Math.cos(theta)* pointDistance;
         float y5 = cy + (float) Math.sin(theta)* pointDistance;
-        return new PointF(x5, y5);
+        return new Point2DF(x5, y5);
     }
 
-    public static PointF solveCircles(float x0, float y0, float cx, float cy, float pulleyRadius, boolean leftNotRight, float[] theta_r)
+    public static Point2DF solveCircles(float x0, float y0, float cx, float cy, float pulleyRadius, boolean leftNotRight, float[] theta_r)
     {
         float dx = x0-cx;
         float dy = y0-cy;
@@ -203,7 +203,7 @@ public class ChainX
 //            Log.d(LOG_TAG, "theta = "+theta_r[0]+" = atan2("+xp+"+"+xpp+", " + yp + "+" + ypp + ")");
         }
 
-        return new PointF(cx + xpp + xp, cy + ypp + yp);
+        return new Point2DF(cx + xpp + xp, cy + ypp + yp);
 
     }
 
@@ -227,7 +227,7 @@ public class ChainX
 
     protected void calcCircleTopTangent(float[] theta_r, boolean leftNotRight)
     {
-        PointF v1 = solveCircles(x0, y0, cx, cy, pulleyRadius, leftNotRight, theta_r);
+        Point2DF v1 = solveCircles(x0, y0, cx, cy, pulleyRadius, leftNotRight, theta_r);
         theta1 = theta_r[0];
 //        Log.d(LOG_TAG, " v1 = "+v1.x+", "+v1.y);
         x1 = v1.x;
@@ -244,7 +244,7 @@ public class ChainX
 
     protected void calcCircleBottomTangent(float[] theta_r, boolean leftNotRight)
     {
-        PointF v3 = solveCircles(x4, y4, cx, cy, pulleyRadius, leftNotRight, theta_r);
+        Point2DF v3 = solveCircles(x4, y4, cx, cy, pulleyRadius, leftNotRight, theta_r);
         theta2 = theta_r[0];
 
         x3 = v3.x;
