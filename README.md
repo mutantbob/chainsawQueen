@@ -2,6 +2,7 @@ This is my first animated wallpaper for android.
 
 It features a skull wearing a tiara and crossed chainsaws beneath.
 The teeth on the chainsaws are animated.
+![](chainsawQueen/res/drawable/thumb.png?raw=true)
 
 All the java code is mine, and I made the SVG, but the artistic
 concept belongs to someone else.  Fans will recognize it instantly.
